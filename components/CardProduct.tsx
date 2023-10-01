@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { addToCart } from '@/redux/CartSlice';
 import { useDispatch,useSelector } from 'react-redux';
 import {toast} from "react-toastify"
+import { CartItem } from '@/types/CartTypes';
 
 
 interface CardProductProps {
@@ -19,12 +20,17 @@ interface CardProductProps {
 const CardProduct: React.FC<CardProductProps> = ({ id, title, price, description, image }) => { 
   
   const dispatch = useDispatch()
+  const quantity = 1;
   const addProductToRedux =()=>{
-    // const payload = {
-    //   id,
-    //   quantity: 1, // You may initialize quantity as needed
-    // };
-    dispatch(addToCart({id, title, price, description, image}))
+    const cartItem: CartItem = {
+      id,
+      title,
+      price,
+      description,
+      image,
+      quantity,
+    };
+    dispatch(addToCart(cartItem))
     toast.success('Item added to cart!' ,{
       position: toast.POSITION.TOP_RIGHT,
       autoClose: 1000,
