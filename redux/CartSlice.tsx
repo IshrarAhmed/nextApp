@@ -44,6 +44,7 @@ export const cartSlice = createSlice({
         item.quantity--;
       }
     },
+   
   },
 });
 

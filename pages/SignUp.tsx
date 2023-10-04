@@ -67,7 +67,7 @@ export default function SignUp() {
           setErrorPassword(false)
           setEmailError(false)
       }
-console.log("register",userdata)
+
   return (
     <form className={signUpstyle.form}  onSubmit={handleSubmit}>
 
@@ -131,7 +131,7 @@ console.log("register",userdata)
       <input
         required
         placeholder=""
-        type="email"
+        type="text"
         className={signUpstyle.input}
         value={register.address}
         onChange={(e) => handleInputChange(e, "address")}

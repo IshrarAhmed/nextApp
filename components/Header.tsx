@@ -8,8 +8,9 @@ import { useRouter } from 'next/router'
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { CgProfile} from "react-icons/cg";
 
-import { useSelector } from 'react-redux'
-import Modal from './Modal'
+import { useSelector ,useDispatch} from 'react-redux'
+import ModalFun from './Modal'
+import {userLogout} from "@/redux/UserData"
 
 
 export default function Header ()  {
@@ -17,11 +18,21 @@ export default function Header ()  {
   )
   const userLogggedIn = useSelector((state:any)=>state.user.isloggedIn
   )
- const [modalOpen ,setModalOpen] = useState(false)
+ const dispatch = useDispatch()
   const [query,setQuery] = useState("")
   const router = useRouter()
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
+ 
   const trimmedQuery = query.trim();
+  const openModal = () => {
+    setModalIsOpen(true);
+
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
    const handleSearchSubmit = (e:any) => {
     e.preventDefault();
     {
@@ -29,6 +40,7 @@ export default function Header ()  {
     }
 
   }
+
   return (
     <nav
       className="navbar navbar-expand-lg navbar-light"
@@ -122,18 +134,25 @@ export default function Header ()  {
              </Link>
 
 
-             <div
+   {  !userLogggedIn?        <div
               style={{
                 marginBottom: "-10px",
                 marginRight: "80px",
       
               }}
             >
-              <Link  className="nav-link active" aria-current="page" href='/SignUp' passHref aria-label="aboutUs">
-             { !userLogggedIn? "SignUp":"Logout"}
+              <Link  className="nav-link active" aria-current="page" href='/Login' passHref aria-label="aboutUs" style={{marginLeft:"19px",
+
+            marginBottom:"10px",
+                          marginRight:"-60px"}}>
+             {/* { !userLogggedIn? "SignUp":"Logout"} */} SignUp
               </Link>
-   </div>
-       { modalOpen&& <Modal/>}
+   </div>: <div onClick={()=>{
+    dispatch(userLogout())
+   }}  
+   style={{margin:"23px"}}
+   >Logout</div>}
+      
           <div
          
           >
@@ -145,7 +164,16 @@ export default function Header ()  {
               //   cursor: "arrow",
               // }}
             >
-              { userLogggedIn&&  <div onClick={()=>setModalOpen(true)}><CgProfile/></div>}
+            <div>
+      {userLogggedIn && (
+        <div onClick={openModal}  style={{marginTop:"9px",fontSize:"20px",marginRight:"30px"}}>
+          <CgProfile />
+        </div>
+      )}
+
+      {/* Render the ModalFun component */}
+      <ModalFun isOpen={modalIsOpen} onRequestClose={closeModal} />
+    </div>
             </h6>
           </div>
         </div>

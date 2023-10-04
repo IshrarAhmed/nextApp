@@ -9,15 +9,11 @@ import { useRouter } from "next/router";
 // import { useDispatch,useSelector } from "react-redux";
 // import { GetServerSideProps } from "next";
 
-
-
-
 export async function getServerSideProps() {
   try {
     const res = await fetch(`https://fakestoreapi.com/products`);
     const data = await res.json();
 
-    console.log("Fetched data:", data);
 
     return { props: { data } };
   } catch (error) {
@@ -26,24 +22,21 @@ export async function getServerSideProps() {
   }
 }
 
+export default function LandingPage({ data }: any) {
 
-
-export default function LandingPage({data}:any) {
-  console.log("dataaaaaaa",data)
   interface Data {
     id: number;
     price: number;
     title: string;
     image: string;
     description: string;
-  } 
+  }
 
   const [product, setProduct] = useState<Data[]>([]);
   const [isloading, setIsloading] = useState<boolean>(true);
   const [category, setCategory] = useState<string>("All");
   const router = useRouter();
   const searchQuery = router.query.searchquery as string | undefined;
-
 
   const url =
     category == "All" ? "/products" : `/products/category/${category}`;
@@ -60,32 +53,30 @@ export default function LandingPage({data}:any) {
     setCategory(e.target.value);
   };
   useEffect(() => {
-
-    if(searchQuery||category){
-   getdata()
-    }else{
-      setProduct(data)  
+    if (searchQuery || category) {
+      getdata();
+    } else {
+      setProduct(data);
     }
- 
- if(data?.length>0){
- setIsloading(false)
- }
-  }, [category ]);
+
+    //  if(data?.length>0){
+    //  setIsloading(false)
+    //  }
+  }, [category]);
   const filterdata = searchQuery
-  ? product?.filter((prodct, index) => {
+    ? product?.filter((prodct, index) => {
+        return prodct?.title.toLowerCase().includes(searchQuery.toLowerCase());
+      })
+    : product;
 
-      return prodct?.title.toLowerCase().includes(searchQuery.toLowerCase());
-    })
-  : product;
 
-console.log("filterdata",filterdata.length)
- 
+
   return (
     <div className="container" style={{ paddingBottom: "50px", gap: "10px" }}>
       <div className="carousel slide" style={{ marginTop: "47px" }}>
         <Hero />
 
-   {  filterdata.length >0&&    
+        {filterdata.length > 0 && (
           <div className={cardStyle["category_cl"]} key="category">
             <h5>Search By Category</h5>
             <select className="form-control w-25" onClick={handleClick}>
@@ -96,34 +87,36 @@ console.log("filterdata",filterdata.length)
               <option value="women's clothing"> women's clothing</option>
               <option value="electronics"> electronics</option>
             </select>
-          </div>}
-        
+          </div>
+        )}
       </div>
 
-    
-     {filterdata.length>0  ? <div className={cardStyle["custom_row"]}>
-          {!isloading ? (
-            filterdata &&
-            filterdata?.map((item, index) => {
-              return (
-                <div key={index}>
-                  <CardProduct
-                    key={item?.id}
-                    title={item?.title}
-                    price={item?.price}
-                    description={item?.description}
-                    image={item?.image}
-                    id={item?.id}
-                  />
-                </div>
-              );
-            })
-          ) : (
-            <LoaderSkeleton count={8}  />
-          )}
-        </div>:
+      <div className={cardStyle["custom_row"]}>
+        {!isloading ? (
+          filterdata?.map((item, index) => {
+            return (
+              <div key={index}>
+                <CardProduct
+                  key={item?.id}
+                  title={item?.title}
+                  price={item?.price}
+                  description={item?.description}
+                  image={item?.image}
+                  id={item?.id}
+                />
+              </div>
+            );
+          })
+        ) : (
+          <LoaderSkeleton count={8} />
+        )}
+      </div>
 
-       <div className="noProduct" style={{ marginLeft: "37%" }}>
+      {searchQuery && filterdata.length == 0 && (
+        <div
+          className="noProduct"
+          style={{ marginLeft: "37%", marginTop: "25px" }}
+        >
           <img
             src="https://i.imgur.com/dCdflKN.png"
             width={130}
@@ -133,8 +126,8 @@ console.log("filterdata",filterdata.length)
           <h3>
             <strong> No Product Found</strong>
           </h3>
-        </div>}
-    
+        </div>
+      )}
     </div>
   );
 }

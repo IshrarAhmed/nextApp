@@ -2,6 +2,8 @@
 import { deleteFromCart, increment, decrement } from "@/redux/CartSlice";
 import Link from "next/link";
 import {  AiOutlineDelete } from "react-icons/ai";
+import { useRouter } from "next/router";
+import { toast } from 'react-toastify';
 
 
  
@@ -9,13 +11,28 @@ import {  AiOutlineDelete } from "react-icons/ai";
 export default function CartPage (){
     const dispatch = useDispatch()
   const cartData = useSelector((state:any) => state.cart.cartitem);
+  const router = useRouter()
 
+  const userLogggedIn = useSelector((state:any)=>state.user.isloggedIn
+  )
+ console.log("userlogged",userLogggedIn)
+  const proccedToBuy = ()=>{
+    if(userLogggedIn){
+       router.push("/checkOut")
+    }else{
+      toast.error(' Please Login!' ,{
+        position: toast.POSITION.TOP_RIGHT,
+        autoClose: 1000,
+    })
+    }
+  }
 
     return (
         <>
 { cartData.length >0 ?        <section className="h-100" style={{ backgroundColor: "#eee" }}>
           <div className="container h-100 py-5">
-            <div className="row d-flex justify-content-center align-items-center h-100">
+            <div className="row d-flex justify-content-center align-items-center h-100"> 
+        <div onClick={proccedToBuy}>    <button className="btn btn-primary w-25 ml-1" type="button">Procced to Buy</button></div>
               <div className="col-10">
                 Cart Item
                 {cartData.map((item:any, ) => {

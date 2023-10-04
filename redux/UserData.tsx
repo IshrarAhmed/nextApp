@@ -1,4 +1,5 @@
 import { createSlice,PayloadAction } from '@reduxjs/toolkit'
+// import { string } from 'yup'
 interface userdata {
     firstName:String
     lastName:String
@@ -11,10 +12,12 @@ interface userdata {
 interface userDataState {
  userRegistration:userdata|null,
  isloggedIn: boolean;
+ profileImage:string
 }
   const initialState:userDataState={
     userRegistration :null,
-    isloggedIn: false
+    isloggedIn: false,
+    profileImage:""
   }
   export const userSlice = createSlice({
     name:"userData",
@@ -24,8 +27,16 @@ interface userDataState {
     },
     userLogged: (state) => {
         state.isloggedIn = true; 
-      },}
+      },
+      imageAdd:(state,action:PayloadAction<string>)=>{
+        state.profileImage= action.payload
+    
+      },
+      userLogout:(state)=>{
+        state.isloggedIn= false
+      }
+    }
   })
-export const { AddUserData,userLogged} = userSlice.actions
+export const { AddUserData,userLogged,imageAdd,userLogout} = userSlice.actions
  
 export default userSlice.reducer

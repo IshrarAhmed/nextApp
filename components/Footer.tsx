@@ -1,4 +1,7 @@
 import React from 'react'
+import { AiOutlineInstagram ,AiOutlineTwitter} from "react-icons/ai";
+import {BsFacebook } from "react-icons/bs"
+
 
 export default function Footer(){
   return (
@@ -19,21 +22,21 @@ export default function Footer(){
               className="me-4 text-reset"
               aria-label="Instagram"
             >
-              {/* <AiOutlineInstagram /> */}
+              <AiOutlineInstagram />
             </a>
             <a
               href="https://www.facebook.com"
               className="me-4 text-reset"
               aria-label="Facebook"
             >
-              {/* <BsFacebook /> */}
+              <BsFacebook />
             </a>
             <a
               href="https://twitter.com/i/flow/login"
               className="me-4 text-reset"
               aria-label="Twitter"
             >
-              {/* <AiOutlineTwitter /> */}
+              <AiOutlineTwitter />
             </a>
           </div>
         </section>

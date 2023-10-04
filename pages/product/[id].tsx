@@ -22,7 +22,7 @@ export const getServerSideProps:GetServerSideProps=async(context:any)=> {
     const res = await fetch(`https://fakestoreapi.com/products/${id}`);
     const data = await res.json();
  
-    console.log("Fetched data:", data);
+
             
     return { props: { data } };
   } catch (error) {
@@ -61,18 +61,18 @@ export default function ProductDetails({data}:Details) {
   //     console.log("errrrrrorrrrr", err);
   //   }
   // };
- console.log("product length",product)
+ 
   useEffect(() => {
     // getProduct();
      setProduct(data)
-     if(data){
+     if(product){
  setIsloading(false)
      }
   }, []);
   return (
     <>
-      {!isloading ? (
-        <div className="row d-flex justify-content-center">
+      {isloading ? (
+        <div className="row d-flex justify-content-center w-100">
           <div className="col-md-12">
             <Link className="text-decoration-none text-dark" href="/">
                 <div className="d-flex align-items-center m-3">
@@ -164,5 +164,7 @@ export default function ProductDetails({data}:Details) {
       </div>
       )}
     </>
+ 
+
   );
 }

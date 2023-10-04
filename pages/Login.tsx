@@ -61,7 +61,6 @@ export default function SignUp() {
           }));
       }
 
-       console.log("register",register)
   return (
     <form className={signUpstyle.form}  onSubmit={handleSubmit}>
 
